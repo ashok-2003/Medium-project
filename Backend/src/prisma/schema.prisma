@@ -25,6 +25,7 @@ model Post{
   title String 
   content String
   published Boolean @default(false)
+  time DateTime @default(now())
   authorId Int
   author User @relation(fields: [authorId] , references: [id] , onDelete: Cascade)   // authorid is the id value from the user table 
 }
