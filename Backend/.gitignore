@@ -36,3 +36,4 @@ lerna-debug.log*
 # additional files
 package-lock.json
 README.md
+wrangler.json
