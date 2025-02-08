@@ -82,9 +82,42 @@ app.post('/', async (c) => {
     }
 });
 
-app.get('/id', async (c) => {
+app.get('/Bulk' , async(c) => {
     try{
-        const querry = c.req.query("id");
+        // so we have to fetch the all user here 
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+
+        const response = await prisma.post.findMany({
+            select : {
+                id : true,
+                time : true,
+                title : true,
+                content : true,
+                author : {
+                    select : {
+                        name : true
+                    }
+                }
+            }
+        })
+
+        await prisma.$disconnect(); 
+
+        return c.json(response , 200);
+    }
+    catch(err){
+        return c.json({
+            message : "something went wrong",
+            error : err
+        }, 500)
+    }
+});
+
+app.get('/:id', async (c) => {
+    try{
+        const querry = c.req.param("id");
         if(!querry){
             return c.json({
                 message : "please give the id"
@@ -129,38 +162,6 @@ app.get('/id', async (c) => {
     }
 });
 
-app.get('/Bulk' , async(c) => {
-    try{
-        // so we have to fetch the all user here 
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env.DATABASE_URL,
-        }).$extends(withAccelerate());
-
-        const response = await prisma.post.findMany({
-            select : {
-                id : true,
-                time : true,
-                title : true,
-                content : true,
-                author : {
-                    select : {
-                        name : true
-                    }
-                }
-            }
-        })
-
-        await prisma.$disconnect(); 
-
-        return c.json(response , 200);
-    }
-    catch(err){
-        return c.json({
-            message : "something went wrong",
-            error : err
-        }, 500)
-    }
-})
 
 app.put('/blog', async (c) => {
     try{
