@@ -82,7 +82,7 @@ app.post('/', async (c) => {
     }
 });
 
-app.get('/:id', async (c) => {
+app.get('/id', async (c) => {
     try{
         const querry = c.req.query("id");
         if(!querry){
@@ -129,14 +129,14 @@ app.get('/:id', async (c) => {
     }
 });
 
-app.get('/bulk' , async(c) => {
+app.get('/Bulk' , async(c) => {
     try{
         // so we have to fetch the all user here 
         const prisma = new PrismaClient({
             datasourceUrl: c.env.DATABASE_URL,
         }).$extends(withAccelerate());
 
-        const respone = await prisma.post.findMany({
+        const response = await prisma.post.findMany({
             select : {
                 id : true,
                 time : true,
@@ -152,7 +152,7 @@ app.get('/bulk' , async(c) => {
 
         await prisma.$disconnect(); 
 
-        return c.json(respone , 200);
+        return c.json(response , 200);
     }
     catch(err){
         return c.json({
