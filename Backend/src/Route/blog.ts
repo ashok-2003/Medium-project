@@ -82,6 +82,8 @@ app.post('/', async (c) => {
     }
 });
 
+// this should be before the /:id request other wise request will go to 
+// the /:id then 
 app.get('/Bulk' , async(c) => {
     try{
         // so we have to fetch the all user here 

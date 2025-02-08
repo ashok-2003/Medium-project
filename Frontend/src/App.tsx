@@ -1,11 +1,21 @@
-
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './App.css'
+import { Signup } from './pages/Signup'
+import { Signin } from './pages/Signin';
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold text-blue-600">
-      Hello, Tailwind CSS!
-    </h1>
+    <>
+      <ToastContainer />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/signin' element={<Signin />} />
+          </Routes>
+        </BrowserRouter>
+    </>
   );
 }
 
