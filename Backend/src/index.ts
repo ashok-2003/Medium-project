@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import UserRoute from './user'; // improting all my routes to use in the this file
-import BlogRoute from './blog';
+import UserRoute from './Route/user'; // improting all my routes to use in the this file
+import BlogRoute from './Route/blog';
 
 
 const app = new Hono()

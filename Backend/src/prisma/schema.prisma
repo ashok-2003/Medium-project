@@ -22,7 +22,7 @@ model User{
 }
 model Post{
   id Int @id @default(autoincrement())
-  title String 
+  title String  @unique // title should be unique
   content String
   published Boolean @default(false)
   time DateTime @default(now())
