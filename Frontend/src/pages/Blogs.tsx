@@ -1,6 +1,7 @@
 import { useBlogs } from "../hooks"
 import { BlogCard } from '../components/BlogCard'
 import { AppBar } from "../components/AppBar";
+import { SkeletonBlogCard } from "../components/SkeletonBlogCard";
 
 // so here all blogs will show up
 export const Blogs = () => {
@@ -11,8 +12,13 @@ export const Blogs = () => {
                 <div>
                     <AppBar />
                 </div>
-                <div className="text-center ">
-                    loading
+                <div role="status" className="animate-pulse">
+                    <div className="grid justify-center mt-12">
+                        <SkeletonBlogCard />
+                        <SkeletonBlogCard />
+                        <SkeletonBlogCard />
+                        <SkeletonBlogCard />
+                    </div>
                 </div>
             </div>
         )

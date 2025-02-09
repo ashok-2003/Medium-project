@@ -2,6 +2,7 @@
 
 import { AppBar } from "../components/AppBar";
 import { Avatar } from "../components/BlogCard"
+import { SkeletonBlogCard } from "../components/SkeletonBlogCard";
 import { useBlogId } from "../hooks"
 import { useParams } from "react-router-dom";
 
@@ -13,8 +14,11 @@ export const Blog = () => {
     if (loading) {
         return <div>
             <AppBar />
-            <div>
-                loading
+            <div role="status" className="animate-pulse">
+                <div className="grid justify-center mt-12">
+                    <SkeletonBlogCard />
+                    <SkeletonBlogCard />
+                </div>
             </div>
         </div>
     }
