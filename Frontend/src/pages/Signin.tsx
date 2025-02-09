@@ -1,11 +1,13 @@
 // so this will be our signin page signup
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { QuoteLable } from "../components/QuoteLable"
 import { Labelinput } from "../components/Labelinput"
 import { useState } from "react"
 import { Button } from "../components/Button"
 import { z } from "zod"
 import { toast } from "react-toastify"
+import axios from "axios"
+import { BACKEND_URL } from "../config"
 
 const SigninSchema = z.object({
     email : z.string().email("Invalid email address"),
@@ -14,8 +16,22 @@ const SigninSchema = z.object({
 type signinrequestType = z.infer<typeof SigninSchema>
 
 
-async function signinRequest({email , password} : signinrequestType) {
-    console.log(email , password)
+async function signinRequest({email , password} : signinrequestType , Navigate : any) {
+    try { 
+        const response = await axios.post(`${BACKEND_URL}api/v1/user/signin`, {
+            email: email,
+            password: password
+        })
+        const jwt = response.data.token;
+        localStorage.setItem("token" , jwt); 
+        // have set the item after it 
+        toast.success("Signin successful");
+        Navigate('/blogs')
+    }
+    catch (err) {
+        toast.error("wrong email or password")
+        return
+    }
 }
 
 export const Signin = () => {
@@ -23,6 +39,7 @@ export const Signin = () => {
    
     const[email , setEmail] = useState("");
     const[password, setPassword] = useState("");
+    const Navigate = useNavigate();  // for navigating to the blogs page
 
     const handleSignin = async () => {
 
@@ -36,12 +53,7 @@ export const Signin = () => {
           return;
         }
       
-        try {
-          await signinRequest({ email, password });
-          toast.success("Signin successful");
-        } catch (error) {
-          toast.error("Signin failed. Please try again.");
-        }
+        await signinRequest({ email, password } , Navigate);
       };
     
     return (
