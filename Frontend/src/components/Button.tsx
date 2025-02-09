@@ -1,7 +1,7 @@
 // so this is the Button component 
 interface Buttontype{
     label : string,
-    onClick : any // i dont know it's type currently
+    onClick : React.MouseEventHandler<HTMLButtonElement>; // this is it's type 
 }
 export const Button = ({label , onClick} : Buttontype) => {
     return (
