@@ -18,31 +18,38 @@ const app = new Hono<{
 // so now here we have to authinticate our application also 
 // so the way to use the authincation in hono to use the app.use
 app.use('/*', async (c, next) => {
-    // so now veryfying the logic here 
     try {
         const header = c.req.header("Authorization") || "";
-        // as the header will be with bearer and then the actual token so for that 
+
+        // Extract the token from the header
         const token = header.split(" ")[1];
 
-        const response = await verify(token, c.env.JWT_SECRET);
-        // so now we assing them with the id 
-        if (!response.id) {
-            return c.json({
-                message: "id is not defined"
-            }, 403)
+        // If no token is provided, throw an error
+        if (!token) {
+            throw new Error("Authorization token is missing");
         }
+
+        // Verify the token
+        const response = await verify(token, c.env.JWT_SECRET);
+
+        // If the token is invalid or doesn't contain an ID, throw an error
+        if (!response.id) {
+            throw new Error("Invalid token: ID is not defined");
+        }
+
+        // Set the user ID in the context
         c.set("UserId", response.id);
 
-        await next(); // next call
-
-    }
-    catch (err) {
+        // Proceed to the next middleware or route handler
+        await next();
+    } catch (err) {
+        // Handle the error and return a response
         return c.json({
-            message: "token expired or invalid user",
-            error: err
-        }, 500)
+            message: "Token expired or invalid user",
+            error: err 
+        }, 500); 
     }
-})
+});
 
 
 app.post('/', async (c) => {
